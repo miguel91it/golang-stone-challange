@@ -13,12 +13,17 @@ func GetAccounts(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 
-	w.WriteHeader(http.StatusCreated)
+	w.WriteHeader(http.StatusOK)
 
 	accounts, _ := db.FindAccounts()
 
 	if err := json.NewEncoder(w).Encode(accounts); err != nil {
-		panic(err)
+
+		w.WriteHeader(http.StatusNotAcceptable)
+
+		fmt.Fprintf(w, "error to encode accounts list to return to the API caller: %s", err.Error())
+
+		return
 	}
 }
 
@@ -71,6 +76,8 @@ func CreateAccount(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := db.SaveAccount(Accounts{*newAccount}...); err != nil {
+
+		w.WriteHeader(http.StatusBadRequest)
 
 		fmt.Fprintf(w, "Error to create the new account: %s", err.Error())
 
