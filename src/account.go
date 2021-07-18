@@ -3,6 +3,7 @@ package main
 import (
 	"crypto/sha256"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"time"
 )
@@ -17,6 +18,20 @@ type Account struct {
 }
 
 type Accounts []Account
+
+func NewAccountFromJson(jsonDecoder *json.Decoder) (*Account, error) {
+
+	var account Account
+
+	if err := jsonDecoder.Decode(&account); err != nil {
+
+		return &Account{}, fmt.Errorf("error to decode json received to Account object: %s", err.Error())
+	}
+
+	account.HashSecret()
+
+	return &account, nil
+}
 
 func (a *Account) UpdateBalance(ammount float64) (float64, error) {
 	// func para atualizar o balance cumulativamente
