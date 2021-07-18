@@ -59,13 +59,18 @@ func GetAccountBalance(w http.ResponseWriter, r *http.Request) {
 
 func CreateAccount(w http.ResponseWriter, r *http.Request) {
 
-	var newAccount Account
+	newAccount, err := NewAccountFromJson(json.NewDecoder(r.Body))
 
-	json.NewDecoder(r.Body).Decode(&newAccount)
+	if err != nil {
 
-	newAccount.HashSecret()
+		w.WriteHeader(http.StatusNotAcceptable)
 
-	if err := db.SaveAccount(Accounts{newAccount}...); err != nil {
+		fmt.Fprintf(w, "Error to create new Account: %s", err.Error())
+
+		return
+	}
+
+	if err := db.SaveAccount(Accounts{*newAccount}...); err != nil {
 
 		fmt.Fprintf(w, "Error to create the new account: %s", err.Error())
 
