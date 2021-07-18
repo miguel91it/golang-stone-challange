@@ -14,14 +14,7 @@ func init() {
 	// inicia o repositorioinmemory
 	db = NewStorage()
 
-	accounts := Accounts{
-		Account{Name: "miguel", Cpf: "398.291.098-60", Secret: "passwd", Balance: 1.5},
-		Account{Name: "pedro", Cpf: "123.456.098-60", Secret: "passwd", Balance: 1.5},
-	}
-
-	if err := db.SaveAccount(accounts...); err != nil {
-		panic(err.Error())
-	}
+	InitAccounts()
 
 }
 
