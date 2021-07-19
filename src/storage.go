@@ -37,6 +37,8 @@ func (s *StorageInMemory) SaveAccount(newAccounts ...Account) error {
 		newAccount.Created_at = time.Now()
 
 		s.accounts = append(s.accounts, newAccount)
+
+		s.transfers[newAccount.Id] = Transfers{}
 	}
 
 	return nil
