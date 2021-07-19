@@ -70,6 +70,11 @@ func (s *StorageInMemory) FindTransfers(accountId int) (Transfers, error) {
 
 func NewStorage() Storage {
 
-	return new(StorageInMemory)
+	// return new(StorageInMemory)
+
+	return &StorageInMemory{
+		make(Accounts, 0),
+		make(map[int]Transfers),
+	}
 
 }
