@@ -92,6 +92,24 @@ func CreateAccount(w http.ResponseWriter, r *http.Request) {
 
 func GetTransfers(w http.ResponseWriter, r *http.Request) {
 
+	w.Header().Set("Content-Type", "application/json")
+
+	w.WriteHeader(http.StatusOK)
+
+	// TODO: mudar isso depois ara peagr o id da conta logada por mei od token
+	loggedAccount := 1
+
+	transfers := db.FindTransfers(loggedAccount)
+
+	if err := json.NewEncoder(w).Encode(transfers); err != nil {
+
+		w.WriteHeader(http.StatusNotAcceptable)
+
+		fmt.Fprintf(w, "error to encode transfers list to return to the API caller: %s", err.Error())
+
+		return
+	}
+
 }
 
 func MakeTransfer(w http.ResponseWriter, r *http.Request) {
