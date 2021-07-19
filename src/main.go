@@ -26,8 +26,8 @@ func main() {
 	router.HandleFunc("/accounts/{id}/balance", GetAccountBalance).Methods("GET")
 	router.HandleFunc("/accounts", CreateAccount).Methods("POST")
 
-	router.HandleFunc("/transfer", GetTransfers).Methods("GET")
-	router.HandleFunc("/transfer", MakeTransfer).Methods("POST")
+	router.HandleFunc("/transfers", GetTransfers).Methods("GET")
+	router.HandleFunc("/transfers", MakeTransfer).Methods("POST")
 
 	// router.HandleFunc("/login", Login).Methods("POST")
 
