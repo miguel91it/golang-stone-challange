@@ -64,8 +64,11 @@ func (s *StorageInMemory) FindAccounts() Accounts {
 	return s.accounts
 }
 
-func (s *StorageInMemory) FindTransfers(accountId int) (Transfers, error) {
-	return s.transfers[accountId], nil
+func (s *StorageInMemory) FindTransfers(accountId int) Transfers {
+
+	// fmt.Printf("\nmap transfers: %+v\n", s.transfers)
+
+	return s.transfers[accountId]
 }
 
 func NewStorage() Storage {
