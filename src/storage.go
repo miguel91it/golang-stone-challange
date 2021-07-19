@@ -59,9 +59,9 @@ func (s *StorageInMemory) FindAccount(id int) Account {
 	return Account{}
 }
 
-func (s *StorageInMemory) FindAccounts() (Accounts, error) {
+func (s *StorageInMemory) FindAccounts() Accounts {
 
-	return s.accounts, nil
+	return s.accounts
 }
 
 func (s *StorageInMemory) FindTransfers(accountId int) (Transfers, error) {
