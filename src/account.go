@@ -33,23 +33,23 @@ func NewAccountFromJson(jsonDecoder *json.Decoder) (*Account, error) {
 	return &account, nil
 }
 
-func (a *Account) UpdateBalance(ammount float64) (float64, error) {
-	// func para atualizar o balance cumulativamente
+func (a *Account) UpdateBalance(ammount float64) float64 {
+	// atualiza o balance cumulativamente
 	a.Balance = a.Balance + ammount
 
-	return a.Balance, nil
+	return a.Balance
 }
 
-func (a *Account) CheckBalanceForDebit(ammountToDebit float64) (bool, error) {
+func (a *Account) checkBalanceForDebit(ammountToDebit float64) error {
 
 	currentBalance := a.Balance
 
 	if ammountToDebit > currentBalance {
 
-		return false, fmt.Errorf("this operation cannot be performed. Current Account Balance '%f' is less than the Ammount to debit %f", currentBalance, ammountToDebit)
+		return fmt.Errorf("this operation cannot be performed. Current Account Balance '%f' is less than the Ammount to debit %f", currentBalance, ammountToDebit)
 	}
 
-	return true, nil
+	return nil
 }
 
 func (a *Account) HashSecret() {
