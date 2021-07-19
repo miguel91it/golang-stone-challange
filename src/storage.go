@@ -9,8 +9,8 @@ type Storage interface {
 	SaveAccount(newAccounts ...Account) error
 	SaveTransfer(newTransfers ...Transfer) error
 	FindAccount(id int) Account
-	FindTransfers(accountId int) (Transfers, error)
-	FindAccounts() (Accounts, error)
+	FindTransfers(accountId int) Transfers
+	FindAccounts() Accounts
 }
 
 type StorageInMemory struct {
