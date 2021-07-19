@@ -15,7 +15,7 @@ func GetAccounts(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 
-	accounts, _ := db.FindAccounts()
+	accounts := db.FindAccounts()
 
 	if err := json.NewEncoder(w).Encode(accounts); err != nil {
 
@@ -33,7 +33,7 @@ func GetAccountBalance(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 
-	accounts, _ := db.FindAccounts()
+	accounts := db.FindAccounts()
 
 	for _, account := range accounts {
 
