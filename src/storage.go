@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type Storage interface {
@@ -45,6 +47,16 @@ func (s *StorageInMemory) SaveAccount(newAccounts ...Account) error {
 }
 
 func (s *StorageInMemory) SaveTransfer(newTransfers ...Transfer) error {
+	for _, newTransfer := range newTransfers {
+
+		newTransfer.Id = uuid.NewString()
+
+		newTransfer.Created_at = time.Now()
+
+		s.transfers[newTransfer.Account_origin_id] = append(s.transfers[newTransfer.Account_origin_id], newTransfer)
+
+	}
+
 	return nil
 }
 
