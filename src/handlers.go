@@ -25,13 +25,12 @@ func GetAccounts(w http.ResponseWriter, r *http.Request) {
 
 		return
 	}
+
 }
 
 func GetAccountBalance(w http.ResponseWriter, r *http.Request) {
 
 	params := mux.Vars(r)
-
-	w.Header().Set("Content-Type", "application/json")
 
 	accounts := db.FindAccounts()
 
@@ -118,21 +117,18 @@ func GetTransfers(w http.ResponseWriter, r *http.Request) {
 
 func MakeTransfer(w http.ResponseWriter, r *http.Request) {
 
-	// var transfer Transfer
-	// var transfer interface{}
-
-	// type transferRequest struct {
-	// 	Cpf string `json:"cpf",omityempty`
-	// 	Id  int    `json:"id",omityempty`
-	// }
-
-	// var transferReq transferRequest
-
-	// json.NewDecoder(r.Body).Decode(&transfer)
-
 	transfer, err := NewTransferFromJson(json.NewDecoder(r.Body))
 
 	if err != nil {
+
+		w.WriteHeader(http.StatusNotAcceptable)
+
+		fmt.Fprintf(w, "Error to validate the Transfer data: %s", err.Error())
+
+		return
+	}
+
+	if err := transfer.MakeTransfer(); err != nil {
 
 		w.WriteHeader(http.StatusNotAcceptable)
 
@@ -141,37 +137,7 @@ func MakeTransfer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Printf("\nBody r: %v", transfer)
+	w.WriteHeader(http.StatusOK)
 
-	// idDestination := transferReq.Id
-
-	// fmt.Printf("\transfer Requeset Id destiantion: %d", idDestination)
-
-	// if transferReq.Id == 0 && transferReq.Cpf == "" {
-	// 	w.WriteHeader(http.StatusBadRequest)
-
-	// 	fmt.Fprint(w, "it's necessary provide either the cpf or account id of the destination account to perform the transfer")
-
-	// 	return
-	// }
-
-	// TODO: busca a conta miguel forçadamente, depois rever isso
-	accountOrigin := db.FindAccount(1)
-
-	// accountDestination := db.FindAccount(transferReq.Id)
-
-	fmt.Printf("\nAccount origin: %v", accountOrigin)
-
-	// fmt.Printf("\nAccount destination: %v", accountDestination)
-
-	// if (Account{} == accountDestination) {
-
-	// 	w.WriteHeader(http.StatusNotFound)
-
-	// 	fmt.Fprintf(w, "Account Destination provided does not exists.")
-
-	// 	return
-
-	// }
-
+	fmt.Fprintf(w, "Transfer performed succesfully")
 }
