@@ -9,3 +9,11 @@ Foi bem contraintuitivo dado que tenho toda minha carreira de desenvolvimento or
 Ah, vocês poderão observar nos commits que eu usei o _**git flow**_ e comecei com uma branch chamada _**feature/primeiras-estruturas**_ cujo objetivo era sair com o projeto do zero. Muito provavelmente mudará bastante ainda, acho.
 
 Tentarei ao máximo realizar commits granulares para evidenciar o workflow e minha linha de raciocínio.
+
+## Debito Tecnico
+
+* testes
+
+* validação e correção de race conditions
+
+* como eu faria para corrigir algun race conditions obvios
