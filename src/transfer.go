@@ -120,6 +120,7 @@ func (t *Transfer) FillAccountOriginId() error {
 	return nil
 }
 
+// TODO: rever onde essa função devera ficar, mas acho q nao sera aqui, ver isso apos fazer a rota de login
 func getAccountFromToken() int {
 	return 1
 }
