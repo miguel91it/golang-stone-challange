@@ -75,12 +75,26 @@ func (s *StorageInMemory) FindAccount(id int) Account {
 
 func (s *StorageInMemory) FindAccounts() Accounts {
 
+	formattedAccounts, err := FormatMap(s.accounts)
+
+	if err != nil {
+		fmt.Printf("%s", err.Error())
+	} else {
+		fmt.Printf("\nStorage Accounts: %s\n", formattedAccounts)
+	}
+
 	return s.accounts
 }
 
 func (s *StorageInMemory) FindTransfers(accountId int) Transfers {
 
-	// fmt.Printf("\nmap transfers: %+v\n", s.transfers)
+	formattedTransfers, err := FormatMap(s.transfers)
+
+	if err != nil {
+		fmt.Printf("%s", err.Error())
+	} else {
+		fmt.Printf("\nStorage Transfers: %s\n", formattedTransfers)
+	}
 
 	return s.transfers[accountId]
 }
