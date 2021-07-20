@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"math"
 	"time"
 )
 
@@ -48,16 +49,47 @@ func NewTransferFromJson(jsonDecoder *json.Decoder) (*Transfer, error) {
 	return &transfer, nil
 }
 
-func (t *Transfer) MakeTransfer(destination_account string) error {
+func (t *Transfer) MakeTransfer() error {
 
-	// descobre a conta de origem extraindo do token
+	accountOrigin := db.FindAccount(t.Account_origin_id)
 
-	// verifica se a conta de origem tem saldo para fazer a transferencia
+	accountDestination := db.FindAccount(t.Account_destination_id)
 
-	// debita ammount da conta origem
+	// checa se a conta a ser debitada tem o saldo ok para realizar operação
+	if err := accountOrigin.checkBalanceForDebit(math.Abs(t.Ammount)); err != nil {
+
+		return fmt.Errorf("error checking the balance for debit.%s", err.Error())
+	}
+
 	// atualiza o balance da conta origem
+	accountOrigin.UpdateBalance(t.Ammount)
+
 	// credita ammount na conta destino
-	// atualiza o balance da conta destino
+	accountDestination.UpdateBalance(math.Abs(t.Ammount))
+
+	// persiste no banco o update balance de origem
+	if err := db.UpdateAccount(accountOrigin); err != nil {
+
+		return fmt.Errorf("error trying to save the transfer in database: %s\nPlease, retry", err.Error())
+	}
+
+	// persiste no banco o update balance de destino
+	if err := db.UpdateAccount(accountDestination); err != nil {
+
+		return fmt.Errorf("error trying to save the transfer in database: %s\nPlease, retry", err.Error())
+	}
+
+	// salva na conta de origem o registro do debito da transferencia
+	if err := db.SaveTransfer(*t); err != nil {
+
+		return fmt.Errorf("error trying to save the transfer in database: %s\nPlease, retry", err.Error())
+	}
+
+	// // salva na conta de destino o registro do credito da transferencia
+	// if err := db.SaveTransfer(Transfer{Account_origin_id: t.Account_origin_id, Account_destination_id: t.Account_destination_id, Ammount: t.Ammount}); err != nil {
+
+	// 	return fmt.Errorf("error trying to save the transfer in database: %s\nPlease, retry", err.Error())
+	// }
 
 	// retorna sucesso
 	return nil
