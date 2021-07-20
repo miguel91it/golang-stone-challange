@@ -31,6 +31,12 @@ func NewTransferFromJson(jsonDecoder *json.Decoder) (*Transfer, error) {
 		return &Transfer{}, fmt.Errorf("Account destination does not exists")
 	}
 
+	// verifica se o ammount desejado é maior que zero, afinal, quem realiza transf TIRA dinheiro da sua conta para outra, se nao retorna erro
+	if !(transfer.CheckIfAmmountIsValid()) {
+
+		return &Transfer{}, fmt.Errorf("ammount desired to transfer is invalid. Provide an ammount greater than zero")
+	}
+
 	// recupera a conta de origem, se nao retorna erro
 	if err := transfer.FillAccountOriginId(); err != nil {
 
@@ -65,6 +71,11 @@ func checkIfAccountExists(accountId int) bool {
 	accountFounded := db.FindAccount(accountId)
 
 	return accountId == accountFounded.Id && accountFounded.Id != 0
+}
+
+func (t *Transfer) CheckIfAmmountIsValid() bool {
+
+	return t.Ammount > 0
 }
 
 func (t *Transfer) FillAccountOriginId() error {
