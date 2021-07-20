@@ -9,6 +9,7 @@ import (
 
 type Storage interface {
 	SaveAccount(newAccounts ...Account) error
+	UpdateAccount(changedAccounts ...Account) error
 	SaveTransfer(newTransfers ...Transfer) error
 	FindAccount(id int) Account
 	FindTransfers(accountId int) Transfers
