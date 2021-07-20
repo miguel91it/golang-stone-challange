@@ -2,7 +2,7 @@
 
 ## Primeiros passos
 
-Li e reli o readme da stone e entendi perfeitamente o que queriam. Em termos de complexidade de negócio, o projeto é tranquilo. O bixo pegou mesmo com a questão de desenvolver testes unitários, já que isso nunca foi desenvolvido por mim. Assim, fui atrás do tutorial de aprendizado em go usando testes e iniciei a pasta _**tutorial_tests**_ a fim de ver acontecer o desenvolvimento de um sisteminha usando TDD. 
+Li e reli o readme da stone e entendi perfeitamente o que queriam. Em termos de complexidade de negócio, o projeto é tranquilo. O bixo pegou mesmo com a questão de desenvolver testes unitários, já que nunca tive a oportunidade ainda de desenvolver software com testes. Assim, fui atrás do tutorial de aprendizado em go usando testes e iniciei a pasta _**tutorial_tests**_ a fim de ver acontecer o desenvolvimento de um sisteminha usando TDD. 
 
 Foi bem contraintuitivo dado que tenho toda minha carreira de desenvolvimento orientado à lógica direta do software, e não a testes. Consegui entender alguns aspectos do TDD porém não consegui usar essa visão de desenvolvimento como ponto de partida. Assim, resolvi com o pouco tempo disponível, voltar ao método de desenvolvimento tradicional e só então, após os primeiros resultados do desenvolvimento da API, retomar os testes.
 
