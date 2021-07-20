@@ -46,7 +46,7 @@ func (a *Account) checkBalanceForDebit(ammountToDebit float64) error {
 
 	if ammountToDebit > currentBalance {
 
-		return fmt.Errorf("this operation cannot be performed. Current Account Balance '%f' is less than the Ammount to debit %f", currentBalance, ammountToDebit)
+		return fmt.Errorf(" current account balance '%f' is less than the ammount to debit %f", currentBalance, ammountToDebit)
 	}
 
 	return nil
