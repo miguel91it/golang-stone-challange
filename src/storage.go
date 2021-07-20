@@ -46,6 +46,19 @@ func (s *StorageInMemory) SaveAccount(newAccounts ...Account) error {
 	return nil
 }
 
+func (s *StorageInMemory) UpdateAccount(changedAccounts ...Account) error {
+
+	for _, changedAccount := range changedAccounts {
+
+		accountInDb := &s.accounts[changedAccount.Id-1]
+
+		accountInDb.Balance = changedAccount.Balance
+
+	}
+
+	return nil
+}
+
 func (s *StorageInMemory) SaveTransfer(newTransfers ...Transfer) error {
 	for _, newTransfer := range newTransfers {
 
