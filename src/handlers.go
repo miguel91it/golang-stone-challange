@@ -49,6 +49,8 @@ func GetAccountBalance(w http.ResponseWriter, r *http.Request) {
 
 		if account.Id == idToFind {
 
+			w.Header().Set("Content-Type", "application/json")
+
 			w.WriteHeader(http.StatusOK)
 
 			json.NewEncoder(w).Encode(struct{ Balance float64 }{account.Balance})
@@ -84,7 +86,9 @@ func CreateAccount(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Printf("New account created succesfully")
+	w.WriteHeader(http.StatusOK)
+
+	fmt.Printf("\nNew account created succesfully\n")
 
 	fmt.Fprintf(w, "New account created succesfully")
 
