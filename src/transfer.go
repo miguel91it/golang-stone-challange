@@ -43,6 +43,8 @@ func NewTransferFromJson(jsonDecoder *json.Decoder) (*Transfer, error) {
 		return &Transfer{}, fmt.Errorf("cannot get the account origin from token: %s", err.Error())
 	}
 
+	transfer.Ammount = -transfer.Ammount
+
 	return &transfer, nil
 }
 
