@@ -29,7 +29,7 @@ func main() {
 	router.HandleFunc("/transfers", GetTransfers).Methods("GET")
 	router.HandleFunc("/transfers", MakeTransfer).Methods("POST")
 
-	// router.HandleFunc("/login", Login).Methods("POST")
+	router.HandleFunc("/login", LoginUser).Methods("POST")
 
 	log.Fatal(http.ListenAndServe(":8000", router))
 }
