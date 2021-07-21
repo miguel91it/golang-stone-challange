@@ -1,6 +1,8 @@
 package main
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 )
@@ -18,6 +20,13 @@ func FormatMap(mapVar interface{}) (string, error) {
 
 }
 
-// fmt.Printf("\nmap transfers: %+v\n", s.transfers)
+func HashSecret(secret string) string {
 
-// 	fmt.Println("\nStorage Transfers: ", string(b))
+	h := sha256.New()
+
+	h.Write([]byte(secret))
+
+	secret_hash := h.Sum(nil)
+
+	return hex.EncodeToString(secret_hash)
+}

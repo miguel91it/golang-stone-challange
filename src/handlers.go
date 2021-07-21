@@ -11,6 +11,19 @@ import (
 
 func GetAccounts(w http.ResponseWriter, r *http.Request) {
 
+	token, err := CheckIfIsValidToken(r.Header)
+
+	if err != nil {
+
+		w.WriteHeader(http.StatusForbidden)
+
+		fmt.Fprint(w, err.Error())
+
+		return
+	}
+
+	fmt.Printf("\n%s\n", token)
+
 	w.Header().Set("Content-Type", "application/json")
 
 	w.WriteHeader(http.StatusOK)
@@ -29,6 +42,19 @@ func GetAccounts(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetAccountBalance(w http.ResponseWriter, r *http.Request) {
+
+	token, err := CheckIfIsValidToken(r.Header)
+
+	if err != nil {
+
+		w.WriteHeader(http.StatusForbidden)
+
+		fmt.Fprint(w, err.Error())
+
+		return
+	}
+
+	fmt.Printf("\n%s\n", token)
 
 	params := mux.Vars(r)
 
@@ -65,6 +91,19 @@ func GetAccountBalance(w http.ResponseWriter, r *http.Request) {
 
 func CreateAccount(w http.ResponseWriter, r *http.Request) {
 
+	token, err := CheckIfIsValidToken(r.Header)
+
+	if err != nil {
+
+		w.WriteHeader(http.StatusForbidden)
+
+		fmt.Fprint(w, err.Error())
+
+		return
+	}
+
+	fmt.Printf("\n%s\n", token)
+
 	newAccount, err := NewAccountFromJson(json.NewDecoder(r.Body))
 
 	if err != nil {
@@ -95,6 +134,19 @@ func CreateAccount(w http.ResponseWriter, r *http.Request) {
 
 func GetTransfers(w http.ResponseWriter, r *http.Request) {
 
+	token, err := CheckIfIsValidToken(r.Header)
+
+	if err != nil {
+
+		w.WriteHeader(http.StatusForbidden)
+
+		fmt.Fprint(w, err.Error())
+
+		return
+	}
+
+	fmt.Printf("\n%s\n", token)
+
 	w.Header().Set("Content-Type", "application/json")
 
 	w.WriteHeader(http.StatusOK)
@@ -116,6 +168,19 @@ func GetTransfers(w http.ResponseWriter, r *http.Request) {
 }
 
 func MakeTransfer(w http.ResponseWriter, r *http.Request) {
+
+	token, err := CheckIfIsValidToken(r.Header)
+
+	if err != nil {
+
+		w.WriteHeader(http.StatusForbidden)
+
+		fmt.Fprint(w, err.Error())
+
+		return
+	}
+
+	fmt.Printf("\n%s\n", token)
 
 	transfer, err := NewTransferFromJson(json.NewDecoder(r.Body))
 
@@ -140,4 +205,86 @@ func MakeTransfer(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 
 	fmt.Fprintf(w, "Transfer performed succesfully")
+}
+
+func LoginUser(w http.ResponseWriter, r *http.Request) {
+
+	login, err := NewLoginFromJson(json.NewDecoder(r.Body))
+
+	if err != nil {
+
+		w.WriteHeader(http.StatusNotAcceptable)
+
+		fmt.Fprintf(w, "Error to validate the Login data: %s", err.Error())
+
+		return
+	}
+
+	err = login.Authenticate()
+
+	if err != nil {
+
+		w.WriteHeader(http.StatusNotAcceptable)
+
+		fmt.Fprintf(w, "Not Authenticated: %s", err.Error())
+
+		return
+	}
+
+	accountOrigin := db.FindAccountByCpf(login.Cpf)
+
+	token, err := NewToken(login.Cpf, accountOrigin.Id)
+
+	if err != nil {
+
+		w.WriteHeader(http.StatusNotAcceptable)
+
+		fmt.Fprintf(w, "Token not created: %s", err.Error())
+
+		return
+	}
+
+	if err := db.SaveToken(*token); err != nil {
+
+		w.WriteHeader(http.StatusBadRequest)
+
+		fmt.Fprintf(w, "Error to save the new token: %s", err.Error())
+
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+
+	fmt.Fprintf(w, "Bearer Token Created: %s", token.Token)
+
+}
+
+func GetTokenFromHeader(header http.Header) (string, error) {
+
+	tokenFromHeader := header.Get("Authorization")
+
+	if tokenFromHeader == "" {
+		return "", fmt.Errorf("no acces token was provided in the request header")
+	}
+
+	return tokenFromHeader, nil
+}
+
+func CheckIfIsValidToken(header http.Header) (string, error) {
+
+	token, err := GetTokenFromHeader(header)
+
+	if err != nil {
+
+		return "", fmt.Errorf("invalid token: %s", err.Error())
+	}
+
+	if err := AuthorizeToken(token); err != nil {
+
+		return "", fmt.Errorf("token provided is not allowed to access resources. Please, login again and send the new token received: %s", err.Error())
+	}
+
+	fmt.Printf("\nToken provided is valid and Authorized\n")
+
+	return token, nil
 }

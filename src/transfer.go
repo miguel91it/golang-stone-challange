@@ -85,12 +85,6 @@ func (t *Transfer) MakeTransfer() error {
 		return fmt.Errorf("error trying to save the transfer in database: %s\nPlease, retry", err.Error())
 	}
 
-	// // salva na conta de destino o registro do credito da transferencia
-	// if err := db.SaveTransfer(Transfer{Account_origin_id: t.Account_origin_id, Account_destination_id: t.Account_destination_id, Ammount: t.Ammount}); err != nil {
-
-	// 	return fmt.Errorf("error trying to save the transfer in database: %s\nPlease, retry", err.Error())
-	// }
-
 	// retorna sucesso
 	return nil
 }
