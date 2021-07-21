@@ -141,3 +141,55 @@ func MakeTransfer(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintf(w, "Transfer performed succesfully")
 }
+
+func LoginUser(w http.ResponseWriter, r *http.Request) {
+
+	login, err := NewLoginFromJson(json.NewDecoder(r.Body))
+
+	if err != nil {
+
+		w.WriteHeader(http.StatusNotAcceptable)
+
+		fmt.Fprintf(w, "Error to validate the Login data: %s", err.Error())
+
+		return
+	}
+
+	err = login.Authenticate()
+
+	if err != nil {
+
+		w.WriteHeader(http.StatusNotAcceptable)
+
+		fmt.Fprintf(w, "Not Authenticated: %s", err.Error())
+
+		return
+	}
+
+	accountOrigin := db.FindAccountByCpf(login.Cpf)
+
+	token, err := NewToken(login.Cpf, accountOrigin.Id)
+
+	if err != nil {
+
+		w.WriteHeader(http.StatusNotAcceptable)
+
+		fmt.Fprintf(w, "Token not created: %s", err.Error())
+
+		return
+	}
+
+	if err := db.SaveToken(*token); err != nil {
+
+		w.WriteHeader(http.StatusBadRequest)
+
+		fmt.Fprintf(w, "Error to save the new token: %s", err.Error())
+
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+
+	fmt.Fprintf(w, "Bearer Token Created: %s", token.Token)
+
+}
