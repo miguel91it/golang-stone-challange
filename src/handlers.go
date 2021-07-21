@@ -11,6 +11,19 @@ import (
 
 func GetAccounts(w http.ResponseWriter, r *http.Request) {
 
+	token, err := CheckIfIsValidToken(r.Header)
+
+	if err != nil {
+
+		w.WriteHeader(http.StatusForbidden)
+
+		fmt.Fprint(w, err.Error())
+
+		return
+	}
+
+	fmt.Printf("\n%s\n", token)
+
 	w.Header().Set("Content-Type", "application/json")
 
 	w.WriteHeader(http.StatusOK)
@@ -29,6 +42,19 @@ func GetAccounts(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetAccountBalance(w http.ResponseWriter, r *http.Request) {
+
+	token, err := CheckIfIsValidToken(r.Header)
+
+	if err != nil {
+
+		w.WriteHeader(http.StatusForbidden)
+
+		fmt.Fprint(w, err.Error())
+
+		return
+	}
+
+	fmt.Printf("\n%s\n", token)
 
 	params := mux.Vars(r)
 
@@ -65,6 +91,19 @@ func GetAccountBalance(w http.ResponseWriter, r *http.Request) {
 
 func CreateAccount(w http.ResponseWriter, r *http.Request) {
 
+	token, err := CheckIfIsValidToken(r.Header)
+
+	if err != nil {
+
+		w.WriteHeader(http.StatusForbidden)
+
+		fmt.Fprint(w, err.Error())
+
+		return
+	}
+
+	fmt.Printf("\n%s\n", token)
+
 	newAccount, err := NewAccountFromJson(json.NewDecoder(r.Body))
 
 	if err != nil {
@@ -95,6 +134,19 @@ func CreateAccount(w http.ResponseWriter, r *http.Request) {
 
 func GetTransfers(w http.ResponseWriter, r *http.Request) {
 
+	token, err := CheckIfIsValidToken(r.Header)
+
+	if err != nil {
+
+		w.WriteHeader(http.StatusForbidden)
+
+		fmt.Fprint(w, err.Error())
+
+		return
+	}
+
+	fmt.Printf("\n%s\n", token)
+
 	w.Header().Set("Content-Type", "application/json")
 
 	w.WriteHeader(http.StatusOK)
@@ -116,6 +168,19 @@ func GetTransfers(w http.ResponseWriter, r *http.Request) {
 }
 
 func MakeTransfer(w http.ResponseWriter, r *http.Request) {
+
+	token, err := CheckIfIsValidToken(r.Header)
+
+	if err != nil {
+
+		w.WriteHeader(http.StatusForbidden)
+
+		fmt.Fprint(w, err.Error())
+
+		return
+	}
+
+	fmt.Printf("\n%s\n", token)
 
 	transfer, err := NewTransferFromJson(json.NewDecoder(r.Body))
 
