@@ -193,3 +193,33 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Bearer Token Created: %s", token.Token)
 
 }
+
+func GetTokenFromHeader(header http.Header) (string, error) {
+
+	tokenFromHeader := header.Get("Authorization")
+
+	if tokenFromHeader == "" {
+		return "", fmt.Errorf("no acces token was provided in the request header")
+	}
+
+	return tokenFromHeader, nil
+}
+
+func CheckIfIsValidToken(header http.Header) (string, error) {
+
+	token, err := GetTokenFromHeader(header)
+
+	if err != nil {
+
+		return "", fmt.Errorf("invalid token: %s", err.Error())
+	}
+
+	if err := AuthorizeToken(token); err != nil {
+
+		return "", fmt.Errorf("token provided is not allowed to access resources. Please, login again and send the new token received: %s", err.Error())
+	}
+
+	fmt.Printf("\nToken provided is valid and Authorized\n")
+
+	return token, nil
+}
