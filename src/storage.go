@@ -12,14 +12,22 @@ type Storage interface {
 	UpdateAccount(changedAccounts ...Account) error
 	SaveTransfer(newTransfers ...Transfer) error
 	FindAccount(id int) Account
+	FindAccountByCpf(cpf string) Account
 	FindTransfers(accountId int) Transfers
 	FindAccounts() Accounts
+	SaveToken(newTokens ...Token) error
+	FindTokens() Tokens
 }
 
 type StorageInMemory struct {
+	// slice []Accounts
 	accounts Accounts
 
+	// map {account.id: []Transfers}
 	transfers map[int]Transfers
+
+	// slice []Tokens
+	tokens Tokens
 }
 
 func (s *StorageInMemory) SaveAccount(newAccounts ...Account) error {
@@ -78,6 +86,19 @@ func (s *StorageInMemory) SaveTransfer(newTransfers ...Transfer) error {
 	return nil
 }
 
+func (s *StorageInMemory) FindAccountByCpf(cpf string) Account {
+
+	for _, accountInDB := range s.accounts {
+
+		if cpf == accountInDB.Cpf {
+
+			return accountInDB
+		}
+	}
+
+	return Account{}
+}
+
 func (s *StorageInMemory) FindAccount(id int) Account {
 
 	for _, accountInDB := range s.accounts {
@@ -117,11 +138,43 @@ func (s *StorageInMemory) FindTransfers(accountId int) Transfers {
 	return s.transfers[accountId]
 }
 
+func (s *StorageInMemory) FindTokens() Tokens {
+
+	formattedTokens, err := FormatMap(s.tokens)
+
+	if err != nil {
+		fmt.Printf("%s", err.Error())
+	} else {
+		fmt.Printf("\nStorage Tokens: %s\n", formattedTokens)
+	}
+
+	// for _, tokenInDb := range s.tokens {
+
+	// 	if token.Token == tokenInDb.Token {
+
+	// 		return tokenInDb.Cpf
+	// 	}
+	// }
+
+	return s.tokens
+}
+
+func (s *StorageInMemory) SaveToken(newTokens ...Token) error {
+
+	for _, newToken := range newTokens {
+
+		s.tokens = append(s.tokens, newToken)
+	}
+
+	return nil
+}
+
 func NewStorage() Storage {
 
 	return &StorageInMemory{
 		make(Accounts, 0),
 		make(map[int]Transfers),
+		make(Tokens, 0),
 	}
 
 }
