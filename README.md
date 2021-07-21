@@ -125,7 +125,39 @@ Projeto desenvolvido pelo candidato João Miguel, email miguel91_it@hotmail.com,
 
 ## Como rodar o projeto
 
+O Projeto esta containerizado em uma imagem GO e, para rodá-lo é preciso seguir duas etapas:
 
-Documentar aqui como rodar o projeto
+*  Realizar o build da imagem docker contendo o projeto. Para isso, após realizar o clone do repositório em sua máquina, entre na raid do projeto:
+
+> cd golang-stone-challenge
+
+* Uma vez dentro da raiz do projeto, será preciso realizar o build da imagem docker do projeto. Rode o comando make a seguir:
+
+> make docker-build
+
+* Após a conclusão do build da imagem, basta rodar o container. Para isso rode o comando make a seguir:
+
+> make docker-run
+
+Perceba que o Makefile que está na raiz do projeto encapsula os detalhes de build e run do container, para facilitar o processo.
+
+Caso você encontre problemas ocm o uso do comando make, então siga as seguintes etapas. Mas, antes, certifique-se de estar na raiz do projeto clonado.
+
+* Realize o build da imagem:
+
+> docker build -t stone-challenge .
+
+* Rode o container, mantendo-se anexado a ele para visualizar logs na saída padrão:
+
+> docker run -p 8000:8000 stone-challenge
+
+* Ou, rode o container desanexado para que ele rode em background:
+
+> docker run -d -p 8000:8000 stone-challenge
+
+
+## Como Testar a API
+
+
 
 o que sao cada endpoint e o que eles retornam, com imagens
