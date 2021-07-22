@@ -151,8 +151,9 @@ func GetTransfers(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 
-	// TODO: mudar isso depois ara peagr o id da conta logada por mei od token
-	loggedAccount := 1
+	token, _ := GetTokenFromHeader(r.Header)
+
+	loggedAccount := GetAccountOriginIdFromToken(token)
 
 	transfers := db.FindTransfers(loggedAccount)
 
