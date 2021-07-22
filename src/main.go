@@ -37,5 +37,5 @@ func main() {
 	router.HandleFunc("/login", LoginUser).Methods("POST")
 
 	// sobe o servidor da API na porta fornecida
-	log.Fatal(http.ListenAndServe(":8000", router))
+	log.Fatal(http.ListenAndServe(":16453", router))
 }
