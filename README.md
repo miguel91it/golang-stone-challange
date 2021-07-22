@@ -28,21 +28,21 @@ Projeto desenvolvido pelo candidato João Miguel, email miguel91_it@hotmail.com,
 
 ### Entidade Transfer
 
-    Esta entidade é responsável por agrupar os dados referentes a uma transferência entre contas.
+Esta entidade é responsável por agrupar os dados referentes a uma transferência entre contas.
 
-        * Id                     (string) -> UUID da transferência
-        * Account_origin_id      (int)    -> conta de origem da transferência
-        * Account_destination_id (int)    -> conta de destino da transferência
-        * Ammount                (float)  -> valor da transferência
-        * Created_at             (time)   -> Data e hora que a conta foi criada
+    * Id                     (string) -> UUID da transferência
+    * Account_origin_id      (int)    -> conta de origem da transferência
+    * Account_destination_id (int)    -> conta de destino da transferência
+    * Ammount                (float)  -> valor da transferência
+    * Created_at             (time)   -> Data e hora que a conta foi criada
 
-    Toda vez que uma nova transferência tentar ser realizada, o saldo da conta de origem será avaliado e, se houver saldo maior ou igual ao que se deseja transferir, então será permitido. Do contrário não será permitido e um erro será retornado ao usuário da API.
+Toda vez que uma nova transferência tentar ser realizada, o saldo da conta de origem será avaliado e, se houver saldo maior ou igual ao que se deseja transferir, então será permitido. Do contrário não será permitido e um erro será retornado ao usuário da API.
 
-    Quando for possível realizar a transferência entre contas, o sistema irá registrar duas componentes de Transferência no banco de dados: débito e crédito.
+Quando for possível realizar a transferência entre contas, o sistema irá registrar duas componentes de Transferência no banco de dados: débito e crédito.
 
-    Registrará na lista de transferências da conta de origem uma nova transferência com valor negativo, significando débito. E, de forma simétrica, registrará na lista de transferẽncias da conta de destino uma nova transferência com o mesmo valor, porém positivo, isto é, um crédito.
+Registrará na lista de transferências da conta de origem uma nova transferência com valor negativo, significando débito. E, de forma simétrica, registrará na lista de transferẽncias da conta de destino uma nova transferência com o mesmo valor, porém positivo, isto é, um crédito.
 
-    Assim, dessa forma, é possível rastrear o caminho qual o atual salde de uma determinada conta percorreu, entre débitos e créditos.
+Assim, dessa forma, é possível rastrear o caminho qual o atual salde de uma determinada conta percorreu, entre débitos e créditos.
 
 ### Entidade Login
 
@@ -127,7 +127,7 @@ Projeto desenvolvido pelo candidato João Miguel, email miguel91_it@hotmail.com,
 
 O Projeto esta containerizado em uma imagem GO e, para rodá-lo é preciso seguir duas etapas:
 
-*  Realizar o build da imagem docker contendo o projeto. Para isso, após realizar o clone do repositório em sua máquina, entre na raid do projeto:
+*  Realizar o build da imagem docker contendo o projeto. Para isso, após realizar o clone do repositório em sua máquina, entre na raiz do projeto:
 
 > cd golang-stone-challenge
 
