@@ -7,6 +7,15 @@ import (
 	"fmt"
 )
 
+/*
+	FormatMap recebe um tipo map e reotnra uma string formatada para uma exibição identada na saida padrão
+
+	entrada:
+		- mapVar interface{}
+
+	saida:
+		- string, error
+*/
 func FormatMap(mapVar interface{}) (string, error) {
 
 	mapFormatted, err := json.MarshalIndent(mapVar, "", "  ")
@@ -20,6 +29,15 @@ func FormatMap(mapVar interface{}) (string, error) {
 
 }
 
+/*
+	HashSecret realiza o parse de uma string para Hash usando o metodo SHA256
+
+	entrada:
+		- secret string
+
+	saida:
+		- string
+*/
 func HashSecret(secret string) string {
 
 	h := sha256.New()
