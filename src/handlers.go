@@ -181,9 +181,9 @@ func MakeTransfer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Printf("\n%s\n", token)
+	// fmt.Printf("\n%s\n", token)
 
-	transfer, err := NewTransferFromJson(json.NewDecoder(r.Body))
+	transfer, err := NewTransferFromJson(json.NewDecoder(r.Body), token)
 
 	if err != nil {
 
