@@ -135,9 +135,17 @@ O Projeto esta containerizado em uma imagem GO e, para rodá-lo é preciso segui
 
 > make docker-build
 
-* Após a conclusão do build da imagem, basta rodar o container. Para isso rode o comando make a seguir:
+* Após a conclusão do build da imagem, basta rodar o container em modo background. Para isso rode o comando make a seguir:
 
 > make docker-run
+
+* Se quiser rodar em foreground, para ver alguns logs do servidor:
+
+> docker-run-attached
+
+* Por fim, para remover o container:
+
+> make docker-remove
 
 Perceba que o Makefile que está na raiz do projeto encapsula os detalhes de build e run do container, para facilitar o processo.
 
