@@ -8,11 +8,11 @@ A seguir descreverei como o projeto foi estruturado e como fazer para executá-l
 
 A API de trsnferência entre contas possui as seguintes entidades (modelos):
 
-* Account
-* Transfer
-* Login
-* Token 
-* StorageInMemory
+    * Account
+    * Transfer
+    * Login
+    * Token 
+    * StorageInMemory
 
 ### Entidade Account
 
