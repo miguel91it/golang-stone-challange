@@ -17,7 +17,7 @@ type Transfer struct {
 
 type Transfers []Transfer
 
-func NewTransferFromJson(jsonDecoder *json.Decoder) (*Transfer, error) {
+func NewTransferFromJson(jsonDecoder *json.Decoder, token string) (*Transfer, error) {
 
 	var transfer Transfer
 
@@ -39,7 +39,7 @@ func NewTransferFromJson(jsonDecoder *json.Decoder) (*Transfer, error) {
 	}
 
 	// recupera a conta de origem, se nao retorna erro
-	if err := transfer.FillAccountOriginId(); err != nil {
+	if err := transfer.FillAccountOriginId(token); err != nil {
 
 		return &Transfer{}, fmt.Errorf("cannot get the account origin from token: %s", err.Error())
 	}
@@ -106,15 +106,10 @@ func (t *Transfer) CheckIfAmmountIsValid() bool {
 	return t.Ammount > 0
 }
 
-func (t *Transfer) FillAccountOriginId() error {
+func (t *Transfer) FillAccountOriginId(token string) error {
 
 	// TODO: recuperar o account origin id (inicialmente fixarei o account origin id como sendo 1, porem depois terei que refatorar para buscar essa info no token)
-	t.Account_origin_id = getAccountFromToken()
+	t.Account_origin_id = GetAccountOriginIdFromToken(token)
 
 	return nil
-}
-
-// TODO: rever onde essa função devera ficar, mas acho q nao sera aqui, ver isso apos fazer a rota de login
-func getAccountFromToken() int {
-	return 1
 }
