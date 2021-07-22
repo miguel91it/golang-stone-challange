@@ -14,7 +14,7 @@ func InitAccounts() {
 	for i, account := range accounts {
 
 		// realiza o parse do campo secret para hash
-		account.HashSecret()
+		account.Secret = HashSecret(account.Secret)
 
 		// atualiza a conta com a conta modifica (parsed do secret)
 		accounts[i] = account

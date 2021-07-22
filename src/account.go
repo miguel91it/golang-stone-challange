@@ -1,8 +1,6 @@
 package main
 
 import (
-	"crypto/sha256"
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -43,7 +41,7 @@ func NewAccountFromJson(jsonDecoder *json.Decoder) (*Account, error) {
 	}
 
 	// realiza o parse do campo Secret da conta para um Hash SHA256 para armazenar a senha com mais segurança
-	account.HashSecret()
+	account.Secret = HashSecret(account.Secret)
 
 	return &account, nil
 }
@@ -86,18 +84,4 @@ func (a *Account) checkBalanceForDebit(ammountToDebit float64) error {
 	}
 
 	return nil
-}
-
-/*
-	TODO: deletar esa função aqui porque agora ela esta em utils
-*/
-func (a *Account) HashSecret() {
-
-	h := sha256.New()
-
-	h.Write([]byte(a.Secret))
-
-	secret_hash := h.Sum(nil)
-
-	a.Secret = hex.EncodeToString(secret_hash)
 }
