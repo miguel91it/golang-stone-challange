@@ -79,7 +79,7 @@ func (s *StorageInMemory) SaveTransfer(newTransfers ...Transfer) error {
 		s.transfers[newTransfer.Account_origin_id] = append(s.transfers[newTransfer.Account_origin_id], newTransfer)
 
 		// registra a componente de credito na conta de destino
-		s.transfers[newTransfer.Account_destination_id] = append(s.transfers[newTransfer.Account_destination_id], Transfer{Account_origin_id: newTransfer.Account_origin_id, Account_destination_id: newTransfer.Account_destination_id, Ammount: -newTransfer.Ammount})
+		s.transfers[newTransfer.Account_destination_id] = append(s.transfers[newTransfer.Account_destination_id], Transfer{Id: newTransfer.Id, Account_origin_id: newTransfer.Account_origin_id, Account_destination_id: newTransfer.Account_destination_id, Ammount: -newTransfer.Ammount, Created_at: newTransfer.Created_at})
 
 	}
 
