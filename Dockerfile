@@ -12,6 +12,6 @@ COPY src/Makefile ./
 
 RUN go build -o /api_stone
 
-EXPOSE 8000
+EXPOSE 16453
 
 CMD [ "/api_stone" ]
