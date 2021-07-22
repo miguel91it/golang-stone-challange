@@ -158,6 +158,8 @@ Caso você encontre problemas ocm o uso do comando make, então siga as seguinte
 
 ## Como Testar a API
 
+Para testar a API sugiro usar uma ferramenta de linha de comando como `Curl` ou `Wget`, ou uma ferramenta visual como `Postman`. Ou até mesmo algum tipo de automação programada apra bater nos endpoints.
+
 Os endpoints para usar a API são:
 
 > GET: localhost:16453/accounts
