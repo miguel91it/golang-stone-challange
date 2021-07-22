@@ -4,6 +4,8 @@ Projeto desenvolvido pelo candidato João Miguel, email miguel91_it@hotmail.com,
 
 A seguir descreverei como o projeto foi estruturado e como fazer para executá-lo.
 
+[Clique Aqui](Historico.md) para ir para o outro readme chamado Histórico que conta um pouco sobre alguns aspectos pessoais com o desafio. Importante ler.
+
 ## Estrutura do Projeto
 
 A API de trsnferência entre contas possui as seguintes entidades (modelos):

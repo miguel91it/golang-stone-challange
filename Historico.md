@@ -12,7 +12,7 @@ Tentarei ao máximo realizar commits granulares para evidenciar o workflow e min
 
 ## Git flow
 
-Foi usado o git flow para evidenciar as features que foram sendo trabalhadas conforme o proejto evoluia.
+Foi usado o git flow para padronizar o trabalho de versionamento e evidenciar as features que foram sendo trabalhadas conforme o projeto evoluia.
 
 Inicialmente foi dificil dividir a **feature/primeiras-estruturas** em features menores porque foi preciso eu ver um pouco de tudo funcionando para saber se o rumo estava certo. Então essa primeira feature agrupou o desenvolvimento de bastante funcionalidade.
 
@@ -20,10 +20,18 @@ Porém, da segunda feature em diante comecei a trabalhar débitos técnicos mape
 
 
 
-## Debito Tecnico
+## Debitos Técnicos
 
-* testes
+* Testes
 
-* validação e correção de race conditions
+Infelizmente não tive tempo hábil apra concretizar sua reliazação. Como disse acima, é uma área difícil apra mim ainda mas garanto que será uma das primeiras temática minhas de estudo passando ou não na seleção. No meu projeto da minha empresa é algo que precisamos muito começar a fazer dado que o projeto fica maior a cada novo dia.
 
-* como eu faria para corrigir algun race conditions obvios
+* Validação e correção de race conditions
+
+O projeto tem uma fragilidade de race conditions que eu detectei mas não tive tempo de modificar.
+
+Cada nova requisição que chega ao servidor disparará uma goroutine para processar essa requisição. O problema reside ai porque o banco de dados em memória possui 3 estruturas (accounts [slice], transfers [map] e tokens [slice]) que sofrem escrita. Como há possibilidade de requisições concorrentes a fragilidade para race conditions reside aí nessas 3 estruturas para os casos em que goroutines diferentes tentem escrever simultaneamente.
+
+para corrigir o problema eu criaria 3 channels, um para cada estrutura, em que as solicitações de escrita nas estruturas seria inseridas no channel e uma rotina do outro lado escutaria esses channels recuperando uma solicitação de cada vez e, assim fazendo as escritas seguras nas estruturas.
+
+porém não tive tempo hábil apra temrinar essa modificação e assumi o débito ténico.
