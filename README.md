@@ -153,11 +153,152 @@ Caso você encontre problemas ocm o uso do comando make, então siga as seguinte
 
 * Ou, rode o container desanexado para que ele rode em background:
 
-> docker run -d -p 8000:8000 stone-challenge
+> docker run -d -p 16453:16453 stone-challenge
 
 
 ## Como Testar a API
 
+Os endpoints para usar a API são:
+
+> GET: localhost:16453/accounts
+
+```
+    Header do Request:
+
+        Authorization: <acces_token>
+    
+    Exemplo de Header
+
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....HAiOjE2MjY5MjEzOTd9.KBBJk4gE0HVIeKwPLrfWu2Lu05JcmHZcs7LSG7GRNzY
+
+    Exemplo de Body da Resposta:
+
+        [
+            {
+                "id": 1,
+                "name": "Miguel Lima",
+                "cpf": "398.291.098-60",
+                "secret": "0d6be69b264717f2dd33652e212b173104b4a647b7c11ae72e9885f11cd312fb",
+                "balance": 100.51,
+                "created_at": "2021-07-21T23:33:32.556628925-03:00"
+            },
+            {
+                "id": 2,
+                "name": "Pedro Sampaio",
+                "cpf": "123.456.098-42",
+                "secret": "2702cb34ee041711b9df0c67a8d5c9de02110c80e3fc966ba8341456dbc9ef2b",
+                "balance": 1.5,
+                "created_at": "2021-07-21T23:33:32.556629455-03:00"
+            }
+        ]
+```
+
+> GET: localhost:16453/accounts/{account_id}/balance
+
+```
+    Exemplo de Header
+
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....HAiOjE2MjY5MjEzOTd9.KBBJk4gE0HVIeKwPLrfWu2Lu05JcmHZcs7LSG7GRNzY
+
+    Exemplo de Body da Resposta se a conta existir:
+
+        {
+            "Balance": 1000.21
+        }
+
+    Exemplo de Body da Resposta se a conta NÃO existir:
+
+        "Account not found"
+```
+
+> POST: localhost:16453/accounts
+
+```
+    Exemplo de Header
+
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....HAiOjE2MjY5MjEzOTd9.KBBJk4gE0HVIeKwPLrfWu2Lu05JcmHZcs7LSG7GRNzY
+
+    Exemplo de Body da Requisição:
+
+        {
+            "name":"Priscila Maia",
+            "cpf":"076.636.543-60",
+            "secret":"jhdbdbfhbh@@@$dbdb",
+            "balance":1000.21
+        }
+
+    Exemplo de Body da Resposta se a conta for criada com sucesso:
+        
+        "New account created succesfully"
+    
+    Exemplos de Body da Resposta se a conta NÃO for criada:
+
+        "Error to create the new account: account already exists with this cpf: 076.636.543-60"
+
+        "Error to create new Account: error to decode json received to Account object: invalid character 'n' looking for beginning of object key string"
+```
+
+> GET: localhost:16453/transfers
+
+```
+    Exemplo de Header
+
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....HAiOjE2MjY5MjEzOTd9.KBBJk4gE0HVIeKwPLrfWu2Lu05JcmHZcs7LSG7GRNzY
+
+    Exemplo de Body da Resposta (Neste exemplo a conta logada é a conta de Id = 4):
+
+        [
+            {
+                "id": "be82c878-6ed9-4a3c-af30-77d477dba569",
+                "account_origin_id": 4,
+                "account_destination_id": 2,
+                "ammount": -0.75,
+                "created_at": "2021-07-21T23:46:54.088515204-03:00"
+            }
+        ]
+```
+
+> POST: localhost:16453/transfers
+
+```
+    Exemplo de Header
+
+        Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....HAiOjE2MjY5MjEzOTd9.KBBJk4gE0HVIeKwPLrfWu2Lu05JcmHZcs7LSG7GRNzY
+
+    Exemplo de Body da Requisição:
+
+        {
+            "account_destination_id": 2,
+            "ammount": 0.75
+        }
+
+    Exemplo de Body da Resposta se a transferência entre contas for realizada com sucesso:
+        
+        "Transfer performed succesfully"
+    
+    Exemplos de Body da Resposta se a transferência entre contas NÃO for realizada:
+
+        "Error to validate the Transfer data: Account destination does not exists"
+
+        "Error to perform the Transfer: error checking the balance for debit. current account balance '999.250000' is less than the ammount to debit 1000.000000"
+```
+
+> POST: localhost:16453/login
 
 
-o que sao cada endpoint e o que eles retornam, com imagens
+```
+    Exemplo de Body da Requisição:
+
+        {
+            "cpf":"076.636.543-60",
+            "secret":"jhdbdbfhbh@@@$dbdb"
+        }
+
+    Exemplo de Body da Resposta se o login for realizada com sucesso:
+        
+        "Bearer Token Created: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY20...iMjMyMzN9.BSpW_12Vz8BF0QZO00W5uJoDotz-xstsQ3eyvZlF2b0"
+    
+    Exemplos de Body da Resposta se o login NÃO for realizado:
+
+        "Not Authenticated: either CPF or Secret is not correct"
+```
